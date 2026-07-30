@@ -24,8 +24,9 @@
 
 ### Prerequisites
 
-- Python 3.8+
-- PostgreSQL, SQLite, or Graylog instance (or any data source you want to connect)
+- Python 3.11+
+
+**Note:** Quokka Reports does not require a database to run - databases are only used as data sources for generating reports.
 
 ### Installation
 
@@ -209,7 +210,7 @@ Then reference the provider type in your dataset configuration.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPL v3 License - see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
@@ -223,7 +224,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📬 Contact
 
-Project Link: [https://github.com/yourusername/quokka-reports](https://github.com/yourusername/quokka-reports)
+Project Link: [https://github.com/andreachecchi/quokka-reports](https://github.com/andreachecchi/quokka-reports)
 
 ---
 
