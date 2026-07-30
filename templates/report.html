@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{report_name} - Report System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>{{app_name}}</h1>
+        <div class="user-info">{{reports.welcome}}: <span id="username-display"></span> | <a href="#" class="logout-link">{{reports.logout}}</a></div>
+    </div>
+    
+    <div class="main-content">
+        <div class="report-header">
+            <h2>{report_name}</h2>
+            <p class="report-description">{report_description}</p>
+        </div>
+        
+        <div class="report-actions">
+            <button type="button" id="back-btn" class="btn">{{report.back}}</button>
+        </div>
+        
+        <div id="report-error" class="error-message"></div>
+        
+        <div class="report-content">
+            <div class="report-params" id="params-container" style="display: none;">
+                <h3>{{report.params}}</h3>
+                <form id="report-form">
+                    <!-- Parameters will be injected here -->
+                </form>
+                <div class="report-actions">
+                    <button type="button" id="execute-btn" class="btn btn-primary">{{report.execute_html}}</button>
+                    <button type="button" id="export-pdf-btn" class="btn btn-secondary">{{report.execute_pdf}}</button>
+                    <button type="button" id="export-excel-btn" class="btn btn-excel">{{report.execute_excel}}</button>
+                </div>
+            </div>
+            
+            <div class="report-result">
+                <iframe id="report-iframe" style="display: none;" width="100%" height="600"></iframe>
+                <div id="report-status" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/session.js"></script>
+    <script src="/static/js/localize.js"></script>
+    <script>
+        const REPORT_DATA = {};
+        const DATASETS_DATA = [];
+    </script>
+    <script src="/static/js/report.js"></script>
+</body>
+</html>

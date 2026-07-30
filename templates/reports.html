@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Report System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>{{app_name}}</h1>
+        <div class="user-info">{{reports.welcome}}: <span id="username-display"></span> | <a href="#" class="logout-link">{{reports.logout}}</a></div>
+    </div>
+    
+    <div class="main-content">
+        <div class="reports-header">
+            <h2>{{reports.heading}}</h2>
+            <div class="filters">
+                <input type="text" id="search-input" placeholder="{{reports.search_placeholder}}" class="search-input">
+                <select id="category-filter" class="filter-select">
+                    <option value="">{{reports.all_categories}}<?option>
+                </select>
+                <select id="sort-order" class="filter-select">
+                    <option value="name-asc">{{reports.sort_name_asc}}</option>
+                    <option value="name-desc">{{reports.sort_name_desc}}</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="reports-error" class="error-message"></div>
+        
+        <div class="reports-container">
+            <table class="reports-table">
+                <thead>
+                    <tr>
+                        <th>{{reports.col_name}}</th>
+                        <th>{{reports.col_description}}</th>
+                        <th>{{reports.col_category}}</th>
+                        <th>{{reports.col_tags}}</th>
+                        <th>{{reports.col_actions}}</th>
+                    </tr>
+                <thead>
+                <tbody id="reports-body">
+                </tbody>
+            <table>
+            <div id="no-reports" class="no-reports-message" style="display: none;">
+                {{reports.no_reports}}
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/session.js"></script>
+    <script src="/static/js/localize.js"></script>
+    <script>
+        const REPORTS_DATA = [];
+    </script>
+    <script src="/static/js/reports.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "app_name": "OpenReports",
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "error_required": "Please fill in all fields",
+    "error_failed": "Login failed",
+    "error_invalid": "Invalid username or password"
+  },
+  "reports": {
+    "title": "Report System",
+    "welcome": "Welcome",
+    "logout": "Logout",
+    "heading": "Reports List",
+    "search_placeholder": "Search reports...",
+    "all_categories": "All categories",
+    "sort_name_asc": "Name (A-Z)",
+    "sort_name_desc": "Name (Z-A)",
+    "col_name": "Name",
+    "col_description": "Description",
+    "col_category": "Category",
+    "col_tags": "Tags",
+    "col_actions": "Actions",
+    "no_reports": "No reports available",
+    "run": "Run",
+    "empty_search": "No reports found"
+  },
+  "report": {
+    "back": "Back",
+    "params": "Parameters",
+    "execute_html": "HTML",
+    "execute_pdf": "PDF",
+    "execute_excel": "EXCEL",
+    "success": "Report generated successfully!",
+    "error_validation": "Required field",
+    "error_invalid_number": "Invalid numeric value",
+    "error_invalid_email": "Invalid email format",
+    "error_execution": "Error generating report",
+    "error_pdf": "Error exporting to PDF",
+    "error_excel": "Error exporting to Excel"
+  },
+  "global": {
+    "loading": "Loading...",
+    "error": "Error"
+  }
+}

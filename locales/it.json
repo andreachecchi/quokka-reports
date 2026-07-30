@@ -1,0 +1,48 @@
+{
+  "app_name": "OpenReports",
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Accedi",
+    "error_required": "Compila tutti i campi",
+    "error_failed": "Accesso fallito",
+    "error_invalid": "Username o password non validi"
+  },
+  "reports": {
+    "title": "Report System",
+    "welcome": "Benvenuto",
+    "logout": "Esci",
+    "heading": "Elenco Report",
+    "search_placeholder": "Cerca report...",
+    "all_categories": "Tutte le categorie",
+    "sort_name_asc": "Nome (A-Z)",
+    "sort_name_desc": "Nome (Z-A)",
+    "col_name": "Nome",
+    "col_description": "Descrizione",
+    "col_category": "Categoria",
+    "col_tags": "Tag",
+    "col_actions": "Azioni",
+    "no_reports": "Nessun report disponibile",
+    "run": "Esegui",
+    "empty_search": "Nessun report trovato"
+  },
+  "report": {
+    "back": "Indietro",
+    "params": "Parametri",
+    "execute_html": "HTML",
+    "execute_pdf": "PDF",
+    "execute_excel": "EXCEL",
+    "success": "Report generato con successo!",
+    "error_validation": "Campo obbligatorio",
+    "error_invalid_number": "Valore numerico non valido",
+    "error_invalid_email": "Formato email non valido",
+    "error_execution": "Errore durante la generazione del report",
+    "error_pdf": "Errore durante l'esportazione in PDF",
+    "error_excel": "Errore durante l'esportazione in Excel"
+  },
+  "global": {
+    "loading": "Caricamento...",
+    "error": "Errore"
+  }
+}

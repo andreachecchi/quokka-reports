@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "username": "admin",
+      "password": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "email": "admin@localhost",
+      "isactive": 1,
+      "group": "admins",
+      "locale": "en",
+      "created": "2026-07-28T10:00:00",
+      "updated": "2026-07-28T10:00:00"
+    },
+    {
+      "id": 2,
+      "name": "Admin2",
+      "username": "admin",
+      "password": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "email": "admin2@localhost",
+      "isactive": 1,
+      "group": "admins",
+      "locale": "it",
+      "created": "2026-07-28T10:00:00",
+      "updated": "2026-07-28T10:00:00"
+    }
+  ]
+}
+
