@@ -13,7 +13,7 @@
 ## ✨ Features
 
 - 📊 **Multi-format report generation**: Generate reports as HTML, PDF, or Excel files
-- 🔄 **Dynamic data sources**: Support for PostgreSQL, SQLite, Graylog, and custom data providers
+- 🔄 **Dynamic data sources**: Support for PostgreSQL database and custom data providers
 - 🎨 **Template-based design**: Create stunning reports using HTML/CSS templates
 - 🔐 **User authentication**: Built-in SHA256 password hashing and user management
 - 📁 **Organized structure**: Reports, datasets, and templates organized in separate directories
@@ -84,8 +84,6 @@ quokka-reports/
 ├── users.json           # User accounts database
 ├── data_providers/      # Data source implementations
 │   ├── postgresql.py    # PostgreSQL connector
-│   ├── graylog.py       # Graylog search connector
-│   └── sqlite.py        # SQLite connector
 ├── datasets/            # Dataset definitions
 │   └── [dataset_name].ds/
 │       └── dataset.json
@@ -110,8 +108,6 @@ Quokka Reports supports various data provider types:
 | Type | Description | Required Config |
 |------|-------------|-----------------|
 | `postgresql` | PostgreSQL database | host, port, name, username, password, query |
-| `sqlite` | SQLite database | path, query |
-| `graylog` | Graylog search | url, username, password, query, fields |
 
 ### Dataset Configuration Example
 
