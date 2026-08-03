@@ -85,8 +85,8 @@ def authenticate_user(username: str, password: str) -> dict | None:
     if user is None:
         return None
     
-    # Check if user is active
-    if user.get('isactive', 0) != 1:
+    # Check if user is active (supports both 1 and true values)
+    if not is_user_active(user):
         return None
     
     # Hash the provided password and compare with stored hash
@@ -109,7 +109,8 @@ def is_user_active(user: dict) -> bool:
     Returns:
         True if the user is active, False otherwise
     """
-    return user.get('isactive', 0) == 1
+    isactive = user.get('isactive')
+    return isactive is True or isactive == 1
 
 
 def get_user_group(user: dict) -> str:

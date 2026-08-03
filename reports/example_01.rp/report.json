@@ -7,5 +7,6 @@
   "datasets": [
 	  { "id":"example_dataset_01" }
   ],
-  "template": "report.html"
+  "template": "report.html",
+  "active": true
 }
