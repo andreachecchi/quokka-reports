@@ -17,6 +17,3 @@ DATASETS_DIR = BASE_DIR / "datasets"
 
 # Directory per report generati
 GENERATED_DIR = BASE_DIR / "generated"
-
-# Titolo dell'applicazione
-APP_TITLE = "OpenReports"

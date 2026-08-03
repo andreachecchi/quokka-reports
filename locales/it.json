@@ -1,5 +1,5 @@
 {
-  "app_name": "OpenReports",
+  "app_name": "Quokka Reports",
   "login": {
     "title": "Login",
     "username": "Username",
@@ -10,7 +10,7 @@
     "error_invalid": "Username o password non validi"
   },
   "reports": {
-    "title": "Report System",
+    "title": "Quokka Reports",
     "welcome": "Benvenuto",
     "logout": "Esci",
     "heading": "Elenco Report",

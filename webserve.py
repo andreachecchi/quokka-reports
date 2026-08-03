@@ -4,12 +4,12 @@ from fastapi import FastAPI, Request, Response, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from config import SERVER_PORT, USERS_FILE, APP_TITLE
+from config import SERVER_PORT, USERS_FILE
 from auth import authenticate_user, hash_password, get_user_by_username
 from urllib.parse import quote, unquote
 
 # Create FastAPI app
-app = FastAPI(title=APP_TITLE)
+app = FastAPI(title="OpenReports")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -33,6 +33,24 @@ class ExecuteReportRequest(BaseModel):
 def check_session(request: Request) -> bool:
     """Check if user is authenticated via cookies."""
     return request.cookies.get("authenticated") == "true"
+
+
+def get_app_title() -> str:
+    """Get app title from locale files."""
+    try:
+        locales_dir = Path("locales")
+        if locales_dir.exists():
+            # Try to read en.json or it.json for app_name
+            for locale_file in ["en.json", "it.json"]:
+                locale_path = locales_dir / locale_file
+                if locale_path.exists():
+                    with open(locale_path, "r") as f:
+                        locale_data = json.load(f)
+                        if locale_data.get("app_name"):
+                            return locale_data["app_name"]
+    except:
+        pass
+    return "Quokka Reports"
 
 
 def get_report_details(report_id: str) -> dict:
@@ -138,8 +156,8 @@ async def show_login(request: Request):
     with open(html_path, "r") as f:
         html_content = f.read()
     
-    # Replace APP_TITLE in the template
-    html_content = html_content.replace("Report System", APP_TITLE)
+    # Replace app_name placeholder with title from locale
+    html_content = html_content.replace("{{app_name}}", get_app_title())
     
     return HTMLResponse(content=html_content)
 
@@ -161,10 +179,12 @@ async def show_reports(request: Request):
     with open(html_path, "r") as f:
         html_content = f.read()
     
-    # Replace the empty REPORTS_DATA with actual data and APP_TITLE
+    # Replace the empty REPORTS_DATA with actual data
     reports_json = json.dumps(reports)
     html_content = html_content.replace("const REPORTS_DATA = [];", f"const REPORTS_DATA = {reports_json};")
-    html_content = html_content.replace("Report System", APP_TITLE)
+    
+    # Replace app_name placeholder with title from locale
+    html_content = html_content.replace("{{app_name}}", get_app_title())
     
     return HTMLResponse(content=html_content)
 
@@ -204,7 +224,9 @@ async def show_report_page(request: Request, report_id: str):
     html_content = html_content.replace("{report_description}", report.get("description", ""))
     html_content = html_content.replace("const REPORT_DATA = {};", f"const REPORT_DATA = {report_json};")
     html_content = html_content.replace("const DATASETS_DATA = [];", f"const DATASETS_DATA = {datasets_json};")
-    html_content = html_content.replace("Report System", APP_TITLE)
+    
+    # Replace app_name placeholder with title from locale
+    html_content = html_content.replace("{{app_name}}", get_app_title())
     
     return HTMLResponse(content=html_content)
 
