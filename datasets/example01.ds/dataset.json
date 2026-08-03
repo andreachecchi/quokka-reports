@@ -1,0 +1,18 @@
+{
+  "id": "example_dataset_01",
+  "name": "Example Dataset 01",
+  "description": "This is the example description",
+  "database": {
+    "type": "postgresql",
+    "host": "localhost",
+    "port": 5432,
+    "name": "example_db",
+    "username": "myuser",
+    "password": "supersecret"
+  },
+  "params": [
+    { "id": "from_date", "type": "date", "name": "Start Date" },
+    { "id": "to_date", "type": "date", "name": "End Date" }
+  ],
+  "query": "SELECT id, name, description, document_date from documents where document_date between ${from_date} and data_inizio <= ${to_date}"
+}
