@@ -272,7 +272,7 @@ def generate_report(report_id, params):
             full_dataset_config['_params'] = {}
         
         # Fetch data
-        data = _fetch_data(full_dataset_config)
+        data = _fetch_data(full_dataset_config, dataset_dir)
         dataset_results[dataset_id] = data
     
     # Render template with data

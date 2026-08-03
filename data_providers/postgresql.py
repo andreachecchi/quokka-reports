@@ -1,7 +1,7 @@
 import psycopg2
 
 
-def fetch_data(dataset_config):
+def fetch_data(dataset_config, dataset_dir):
     """
     PostgreSQL implementation of data fetching.
     
@@ -19,8 +19,7 @@ def fetch_data(dataset_config):
         filename = query[1:]  # Remove the '@' prefix
         # Get the directory of the current file to construct full path
         import os
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        query_file_path = os.path.join(current_dir, filename)
+        query_file_path = os.path.join(dataset_dir, filename)
         with open(query_file_path, 'r') as f:
             query = f.read()
     
