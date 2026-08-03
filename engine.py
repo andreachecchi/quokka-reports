@@ -27,7 +27,7 @@ def _load_provider_function(provider_type):
     
     return module.fetch_data
 
-def _fetch_data(dataset_config):
+def _fetch_data(dataset_config, dataset_dir):
     """Fetch data from database using dataset configuration."""
     provider_type = dataset_config['database'].get('type', 'postgresql')
     fetch_function = _load_provider_function(provider_type)
