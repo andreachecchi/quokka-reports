@@ -174,55 +174,51 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
         });
     });
     
-    // Export to PDF button
-    $('#export-pdf-btn').on('click', function() {
-        const $btn = $(this);
-        const $executeBtn = $('#execute-btn');
+// Export to PDF button
+$('#export-pdf-btn').on('click', function() {
+    const $btn = $(this);
+    $btn.prop('disabled', true).addClass('btn-loading');
+    $('#report-error').removeClass('visible');
+    $('#report-status').empty();
+    $('#report-iframe').hide();
+    
+    // Clear previous validation errors
+    $('.param-input').next('.error-message').remove();
+    $('.param-input').removeClass('error');
+    
+    // Validate parameters
+    let hasErrors = false;
+    $('.param-input').each(function() {
+        const $input = $(this);
+        const value = $input.val().trim();
+        const inputType = $input.attr('type');
         
-        // Validate and execute report
-        $executeBtn.prop('disabled', true).addClass('btn-loading');
-        $('#report-error').removeClass('visible');
-        $('#report-status').empty();
-        $('#report-iframe').hide();
-        
-        // Clear previous validation errors
-        $('.param-input').next('.error-message').remove();
-        $('.param-input').removeClass('error');
-        
-        // Validate parameters
-        let hasErrors = false;
-        $('.param-input').each(function() {
-            const $input = $(this);
-            const value = $input.val().trim();
-            const inputType = $input.attr('type');
-            
-            // Check if empty
-            if (!value) {
-                $input.after('<span class="error-message">Campo obbligatorio</span>').addClass('error');
-                hasErrors = true;
-                return;
-            }
-            
-            // Validate input types
-            if (inputType === 'number') {
-                if (isNaN(parseFloat(value)) || !isFinite(value)) {
-                    $input.after('<span class="error-message">Valore numerico non valido</span>').addClass('error');
-                    hasErrors = true;
-                }
-            } else if (inputType === 'email') {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    $input.after('<span class="error-message">Formato email non valido</span>').addClass('error');
-                    hasErrors = true;
-                }
-            }
-        });
-        
-        if (hasErrors) {
-            $executeBtn.prop('disabled', false).removeClass('btn-loading');
-            $btn.prop('disabled', false).removeClass('btn-loading');
+        // Check if empty
+        if (!value) {
+            $input.after('<span class="error-message">Campo obbligatorio</span>').addClass('error');
+            hasErrors = true;
             return;
         }
+        
+        // Validate input types
+        if (inputType === 'number') {
+            if (isNaN(parseFloat(value)) || !isFinite(value)) {
+                $input.after('<span class="error-message">Valore numerico non valido</span>').addClass('error');
+                hasErrors = true;
+            }
+        } else if (inputType === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                $input.after('<span class="error-message">Formato email non valido</span>').addClass('error');
+                hasErrors = true;
+            }
+        }
+    });
+    
+    if (hasErrors) {
+        $btn.prop('disabled', false).removeClass('btn-loading');
+        return;
+    }
         
         // Collect parameters
         const params = {};
@@ -243,60 +239,54 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ params: params }),
-            success: function(response) {
-                $executeBtn.prop('disabled', false).removeClass('btn-loading');
-                
-                if (response.success) {
-                    $('#report-status').html('<div class="success-message">Report generato con successo!</div>');
-                    
-                    // Hide success message after 3 seconds
-                    setTimeout(function() {
-                        $('#report-status').empty();
-                    }, 3000);
-                    
-                    // Export to PDF
-                    const htmlPath = response.html_path;
-                    const htmlFileName = htmlPath.split('/').pop();
-                    
-                    $.ajax({
-                        url: `/api/report/${report.id}/pdf?html_path=${htmlFileName}`,
-                        method: 'GET',
-                        success: function(pdfResponse) {
-                            $btn.prop('disabled', false).removeClass('btn-loading');
-                            
-                            if (pdfResponse.success) {
-                                // Display PDF in iframe
-                                const pdfPath = pdfResponse.pdf_path;
-                                const pdfName = pdfPath.split('/').pop();
-                                $('#report-iframe').attr('src', `/generated/${pdfName}?t=${Date.now()}`);
-                                $('#report-iframe').show();
-                            } else {
-                                $('#report-error').text(pdfResponse.detail || 'Errore durante l\'esportazione in PDF').addClass('visible');
-                            }
-                        },
-                        error: function(xhr) {
-                            $btn.prop('disabled', false).removeClass('btn-loading');
-                            let errorMessage = 'Errore durante l\'esportazione in PDF';
-                            if (xhr.responseJSON && xhr.responseJSON.detail) {
-                                errorMessage = xhr.responseJSON.detail;
-                            }
-                            $('#report-error').text(errorMessage).addClass('visible');
-                        }
-                    });
-                } else {
-                    $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
+                success: function(response) {
                     $btn.prop('disabled', false).removeClass('btn-loading');
+                    
+                    if (response.success) {
+                        $('#report-status').html('<div class="success-message">Report generato con successo!</div>');
+                        
+                        // Hide success message after 3 seconds
+                        setTimeout(function() {
+                            $('#report-status').empty();
+                        }, 3000);
+                        
+                        // Export to PDF
+                        const htmlPath = response.html_path;
+                        const htmlFileName = htmlPath.split('/').pop();
+                        
+                        $.ajax({
+                            url: `/api/report/${report.id}/pdf?html_path=${htmlFileName}`,
+                            method: 'GET',
+                            success: function(pdfResponse) {
+                                if (pdfResponse.success) {
+                                    // Display PDF in iframe
+                                    const pdfPath = pdfResponse.pdf_path;
+                                    const pdfName = pdfPath.split('/').pop();
+                                    $('#report-iframe').attr('src', `/generated/${pdfName}?t=${Date.now()}`);
+                                    $('#report-iframe').show();
+                                } else {
+                                    $('#report-error').text(pdfResponse.detail || 'Errore durante l\'esportazione in PDF').addClass('visible');
+                                }
+                            },
+                            error: function(xhr) {
+                                let errorMessage = 'Errore durante l\'esportazione in PDF';
+                                if (xhr.responseJSON && xhr.responseJSON.detail) {
+                                    errorMessage = xhr.responseJSON.detail;
+                                }
+                                $('#report-error').text(errorMessage).addClass('visible');
+                            }
+                        });
+                    } else {
+                        $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = 'Errore durante la generazione del report';
+                    if (xhr.responseJSON && xhr.responseJSON.detail) {
+                        errorMessage = xhr.responseJSON.detail;
+                    }
+                    $('#report-error').text(errorMessage).addClass('visible');
                 }
-            },
-            error: function(xhr) {
-                $executeBtn.prop('disabled', false).removeClass('btn-loading');
-                let errorMessage = 'Errore durante la generazione del report';
-                if (xhr.responseJSON && xhr.responseJSON.detail) {
-                    errorMessage = xhr.responseJSON.detail;
-                }
-                $('#report-error').text(errorMessage).addClass('visible');
-                $btn.prop('disabled', false).removeClass('btn-loading');
-            }
         });
     });
     
@@ -308,10 +298,7 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
     // Export to Excel button
     $('#export-excel-btn').on('click', function() {
         const $btn = $(this);
-        const $executeBtn = $('#execute-btn');
-        
-        // Validate and execute report
-        $executeBtn.prop('disabled', true).addClass('btn-loading');
+        $btn.prop('disabled', true).addClass('btn-loading');
         $('#report-error').removeClass('visible');
         $('#report-status').empty();
         $('#report-iframe').hide();
@@ -350,7 +337,6 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
         });
         
         if (hasErrors) {
-            $executeBtn.prop('disabled', false).removeClass('btn-loading');
             $btn.prop('disabled', false).removeClass('btn-loading');
             return;
         }
@@ -375,7 +361,7 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
             contentType: 'application/json',
             data: JSON.stringify({ params: params }),
             success: function(response) {
-                $executeBtn.prop('disabled', false).removeClass('btn-loading');
+                $btn.prop('disabled', false).removeClass('btn-loading');
                 
                 if (response.success) {
                     $('#report-status').html('<div class="success-message">Report generato con successo!</div>');
@@ -392,10 +378,8 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
                     $.ajax({
                         url: `/api/report/${report.id}/excel?html_path=${htmlFileName}&params=${encodeURIComponent(JSON.stringify(params))}`,
                         method: 'GET',
-                        success: function(excelResponse) {
-                            $btn.prop('disabled', false).removeClass('btn-loading');
-                            
-                            if (excelResponse.success) {
+                            success: function(excelResponse) {
+                                if (excelResponse.success) {
                                 // Download Excel file
                                 const excelPath = excelResponse.excel_path;
                                 const excelName = excelPath.split('/').pop();
@@ -404,9 +388,8 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
                                 $('#report-error').text(excelResponse.detail || 'Errore durante l\'esportazione in Excel').addClass('visible');
                             }
                         },
-                        error: function(xhr) {
-                            $btn.prop('disabled', false).removeClass('btn-loading');
-                            let errorMessage = 'Errore durante l\'esportazione in Excel';
+                            error: function(xhr) {
+                                let errorMessage = 'Errore durante l\'esportazione in Excel';
                             if (xhr.responseJSON && xhr.responseJSON.detail) {
                                 errorMessage = xhr.responseJSON.detail;
                             }
@@ -415,11 +398,9 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
                     });
                 } else {
                     $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
-                    $btn.prop('disabled', false).removeClass('btn-loading');
                 }
             },
             error: function(xhr) {
-                $executeBtn.prop('disabled', false).removeClass('btn-loading');
                 let errorMessage = 'Errore durante la generazione del report';
                 if (xhr.responseJSON && xhr.responseJSON.detail) {
                     errorMessage = xhr.responseJSON.detail;
