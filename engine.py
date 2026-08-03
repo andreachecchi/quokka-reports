@@ -385,7 +385,7 @@ def generate_excel_report(report_id: str, params: dict) -> str:
             full_dataset_config['_params'] = {}
         
         # Fetch data
-        data = _fetch_data(full_dataset_config)
+        data = _fetch_data(full_dataset_config, dataset_dir)
         dataset_results[dataset_id] = data
     
     # Create generated output directory
