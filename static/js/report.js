@@ -25,7 +25,7 @@ $(document).ready(function() {
     
     // Show report name
     $('h2').text(report.name || 'Report');
-    $('.report-description').text(report.description || '');
+    $('.report-description').html(report.description || '');
     
     // Build parameter form if datasets have parameters
     if (datasets.length > 0) {
