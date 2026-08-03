@@ -1,0 +1,11 @@
+{
+  "id": "example_report_01",
+  "name": "Example report 01",
+  "description": "This is the example report number 01",
+  "category": "Generic",
+  "tags": ["fun","test"],
+  "datasets": [
+	  { "id":"example_dataset_01" }
+  ],
+  "template": "report.html"
+}
