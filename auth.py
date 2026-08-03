@@ -109,8 +109,8 @@ def is_user_active(user: dict) -> bool:
     Returns:
         True if the user is active, False otherwise
     """
-    isactive = user.get('isactive')
-    return isactive is True or isactive == 1
+    active = user.get('active')
+    return active is True or active == 1
 
 
 def get_user_group(user: dict) -> str:
