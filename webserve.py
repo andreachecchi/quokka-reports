@@ -1,15 +1,3 @@
-"""
-FastAPI Web Server for Report System
-
-This server provides authentication and report management functionality.
-
-DIVIETO ASSOLUTO DI JINJA2! È SEVERAMENTE VIETATO!
-Le pagine devono essere generate esclusivamente tramite:
-- HTML statico
-- JavaScript (per manipolare il DOM e caricare dati dinamici tramite API)
-- JSON API per lo scambio di dati
-"""
-
 import json
 from pathlib import Path
 from fastapi import FastAPI, Request, Response, HTTPException
@@ -122,7 +110,8 @@ def get_reports_list() -> list:
                         "category": report_config.get("category", ""),
                         "tags": report_config.get("tags", [])
                     }
-                    reports.append(report_info)
+                    if report_config.get("active", True):  # default to True if "active" is missing
+                        reports.append(report_info)
                 except json.JSONDecodeError:
                     continue
     
