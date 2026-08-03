@@ -32,7 +32,7 @@ def _fetch_data(dataset_config, dataset_dir):
     provider_type = dataset_config['database'].get('type', 'postgresql')
     fetch_function = _load_provider_function(provider_type)
     
-    return fetch_function(dataset_config)
+    return fetch_function(dataset_config, dataset_dir)
 
 def _render_template(template_content, dataset_results, report_config):
     """Render the HTML template with dataset results."""
