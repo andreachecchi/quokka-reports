@@ -1,6 +1,3 @@
-# Configurazione applicazione
-# Questo file contiene le impostazioni di configurazione
-
 from pathlib import Path
 
 # File degli utenti (hash SHA256 delle password)
