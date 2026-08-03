@@ -122,7 +122,7 @@ body {
 /* Loading State */
 .btn-loading {
     position: relative;
-    color: transparent;
+    overflow: hidden;
 }
 
 .btn-loading::after {
@@ -138,6 +138,28 @@ body {
     border-radius: 50%;
     border-top-color: transparent;
     animation: spin 0.8s linear infinite;
+    z-index: 10;
+}
+
+.btn-loading > span,
+.btn-loading > * {
+    visibility: hidden;
+}
+}
+
+.btn-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.btn-loading > * {
+    visibility: hidden;
 }
 
 @keyframes spin {
@@ -361,7 +383,7 @@ body {
     color: #2e7d32;
 }
 
-#export-pdf-btn {
+#export-pdf-btn, #export-excel-btn {
     display: inline-block !important;
 }
 

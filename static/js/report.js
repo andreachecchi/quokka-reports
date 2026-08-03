@@ -159,6 +159,7 @@ $form.append(`<h4 title="${dataset.description || ''}">Dataset: ${dataset.name}<
                     $('#export-pdf-btn').css('display', 'inline-block');
                     $('#export-excel-btn').css('display', 'inline-block');
                 } else {
+                    $btn.prop('disabled', false).removeClass('btn-loading');
                     $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
                 }
             },
@@ -264,11 +265,13 @@ $('#export-pdf-btn').on('click', function() {
                                     const pdfName = pdfPath.split('/').pop();
                                     $('#report-iframe').attr('src', `/generated/${pdfName}?t=${Date.now()}`);
                                     $('#report-iframe').show();
-                                } else {
+                        } else {
+                                    $btn.prop('disabled', false).removeClass('btn-loading');
                                     $('#report-error').text(pdfResponse.detail || 'Errore durante l\'esportazione in PDF').addClass('visible');
                                 }
                             },
                             error: function(xhr) {
+                                $btn.prop('disabled', false).removeClass('btn-loading');
                                 let errorMessage = 'Errore durante l\'esportazione in PDF';
                                 if (xhr.responseJSON && xhr.responseJSON.detail) {
                                     errorMessage = xhr.responseJSON.detail;
@@ -277,10 +280,12 @@ $('#export-pdf-btn').on('click', function() {
                             }
                         });
                     } else {
+                        $btn.prop('disabled', false).removeClass('btn-loading');
                         $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
                     }
                 },
                 error: function(xhr) {
+                    $btn.prop('disabled', false).removeClass('btn-loading');
                     let errorMessage = 'Errore durante la generazione del report';
                     if (xhr.responseJSON && xhr.responseJSON.detail) {
                         errorMessage = xhr.responseJSON.detail;
@@ -385,10 +390,12 @@ $('#export-pdf-btn').on('click', function() {
                                 const excelName = excelPath.split('/').pop();
                                 window.location.href = `/generated/${excelName}`;
                             } else {
+                                $btn.prop('disabled', false).removeClass('btn-loading');
                                 $('#report-error').text(excelResponse.detail || 'Errore durante l\'esportazione in Excel').addClass('visible');
                             }
                         },
                             error: function(xhr) {
+                                $btn.prop('disabled', false).removeClass('btn-loading');
                                 let errorMessage = 'Errore durante l\'esportazione in Excel';
                             if (xhr.responseJSON && xhr.responseJSON.detail) {
                                 errorMessage = xhr.responseJSON.detail;
