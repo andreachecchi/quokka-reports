@@ -1,115 +1,162 @@
 # 🦘 Quokka Reports
 
+<div align="center">
+  <img src="quokka-reports.png" alt="Quokka Reports Logo" width="220"/>
+</div>
+
+<p align="center">
+
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136+-orange.svg)](https://fastapi.tiangolo.com)
 
-**Quokka Reports** is a lightweight, open-source report generation system that transforms database queries and external data sources into beautiful, shareable reports in multiple formats (HTML, PDF, Excel).
+</p>
 
-<div align="center">
-  <img src="quokka-reports.jpg" alt="Quokka Reports Logo" width="200"/>
-</div>
+**Quokka Reports** is a lightweight, open-source reporting platform that transforms SQL queries and external data sources into beautiful, shareable reports in **HTML**, **PDF**, and **Excel** formats.
 
-## ✨ Features
+Designed around a modular architecture, Quokka Reports separates **report definitions**, **datasets**, and **data providers**, making it easy to build custom reporting solutions while keeping the project simple to configure and extend.
 
-- 📊 **Multi-format report generation**: Generate reports as HTML, PDF, or Excel files
-- 🔄 **Dynamic data sources**: Support for PostgreSQL database and custom data providers
-- 🎨 **Template-based design**: Create stunning reports using HTML/CSS templates
-- 🔐 **User authentication**: Built-in SHA256 password hashing and user management
-- 📁 **Organized structure**: Reports, datasets, and templates organized in separate directories
-- 🌐 **Modern web interface**: Built with FastAPI and static HTML/JavaScript
-- 📤 **Export versatility**: Export data to Excel with multiple sheets (one per dataset)
+---
 
-## 🚀 Quick Start
+# ✨ Features
 
-### Prerequisites
+## 📊 Reporting
 
-- Python 3.11+
+* Generate reports in **HTML**, **PDF**, and **Excel**
+* Multi-dataset reports
+* Multi-sheet Excel export (one worksheet per dataset)
+* HTML/CSS template-based rendering
+* Printable and shareable reports
 
-**Note:** Quokka Reports does not require a database to run - databases are only used as data sources for generating reports.
+## 🔄 Data Sources
 
-### Installation
+* PostgreSQL support
+* Graylog support
+* Modular data provider architecture
+* Easily extendable with custom providers
 
-1. **Clone the repository**
+## 🔐 Security
+
+* SHA256 password hashing
+* Active/Inactive user management
+* Login authentication
+* Multi-language interface through locale files
+
+## 🛠 Administration
+
+* Interactive user management utility
+* Password reset
+* User activation/deactivation
+* User creation and deletion
+* Automatic validation and persistence
+
+---
+
+# 🚀 Quick Start
+
+## Prerequisites
+
+* Python **3.11** or newer
+
+> **Note**
+>
+> Quokka Reports does not require its own database.
+> Databases are only used as data sources during report generation.
+
+## Installation
+
+Clone the repository:
+
 ```bash
-git clone https://github.com/yourusername/quokka-reports.git
+git clone https://github.com/andreachecchi/quokka-reports.git
 cd quokka-reports
 ```
 
-2. **Install dependencies**
+Install the required dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Configure users**
-Edit `users.json` to add your users:
-```json
-{
-  "users": [
-    {
-      "id": 1,
-      "name": "Your Name",
-      "username": "your_username",
-      "password": "SHA256_HASH_HERE",
-      "email": "your@email.com",
-      "isactive": 1,
-      "group": "admins",
-      "locale": "en"
-    }
-  ]
-}
-```
+Configure your users:
 
-4. **Configure data sources**
-Edit your dataset JSON files in the `datasets/` directory to connect to your databases.
-
-5. **Run the server**
 ```bash
-python webserve.py
+python management.py
 ```
 
-6. **Access the application**
-Open your browser and navigate to `http://localhost:7489`
+Configure your datasets inside the `datasets/` directory.
 
-## 📁 Project Structure
+Start the application:
+
+```bash
+python quokka.py
+```
+
+Open your browser:
 
 ```
+http://localhost:7489
+```
+
+---
+
+# 📁 Project Structure
+
+```text
 quokka-reports/
-├── auth.py              # User authentication module (SHA256)
+├── quokka.py            # FastAPI application
+├── auth.py              # Authentication
 ├── config.py            # Application configuration
 ├── engine.py            # Report generation engine
-├── excel.py             # Excel export functionality
-├── pdf.py               # PDF generation using Playwright
-├── webserve.py          # FastAPI web server
-├── users.json           # User accounts database
-├── data_providers/      # Data source implementations
-│   ├── postgresql.py    # PostgreSQL connector
-├── datasets/            # Dataset definitions
-│   └── [dataset_name].ds/
+├── excel.py             # Excel export
+├── pdf.py               # PDF generation
+├── management.py        # User management utility
+├── users.json           # User database
+│
+├── data_providers/
+│   ├── postgresql.py
+│   ├── graylog.py
+│   └── ...
+│
+├── datasets/
+│   └── [dataset].ds/
 │       └── dataset.json
-├── reports/             # Report templates
-│   └── [report_name].rp/
+│
+├── reports/
+│   └── [report].rp/
 │       ├── report.json
 │       ├── report.html
 │       └── report.css
-├── generated/           # Generated report output
-└── templates/           # Web interface templates
-    ├── login.html
-    ├── reports.html
-    └── report.html
+│
+├── generated/
+├── templates/
+└── locales/
 ```
 
-## 📝 Configuration
+---
 
-### Data Provider Types
+# 📝 Configuration
 
-Quokka Reports supports various data provider types:
+## Supported Data Providers
 
-| Type | Description | Required Config |
-|------|-------------|-----------------|
-| `postgresql` | PostgreSQL database | host, port, name, username, password, query |
+Quokka Reports currently supports the following data providers:
 
-### Dataset Configuration Example
+| Provider     | Description          |
+| ------------ | -------------------- |
+| `postgresql` | PostgreSQL databases |
+| `graylog`    | Graylog Search API   |
+
+Every provider is implemented as a Python module inside:
+
+```text
+data_providers/
+```
+
+Each provider must expose a `fetch_data()` function.
+
+---
+
+## PostgreSQL Dataset Example
 
 ```json
 {
@@ -125,14 +172,63 @@ Quokka Reports supports various data provider types:
     "password": "mypassword"
   },
   "params": [
-    { "id": "from_date", "type": "date", "name": "Start Date" },
-    { "id": "to_date", "type": "date", "name": "End Date" }
+    {
+      "id": "from_date",
+      "type": "date",
+      "name": "Start Date"
+    },
+    {
+      "id": "to_date",
+      "type": "date",
+      "name": "End Date"
+    }
   ],
   "query": "SELECT * FROM my_table WHERE date >= ${from_date} AND date <= ${to_date}"
 }
 ```
 
-### Report Configuration Example
+---
+
+## Graylog Dataset Example
+
+```json
+{
+  "id": "graylog_dataset",
+  "name": "Graylog Logs",
+  "description": "Graylog search data",
+  "database": {
+    "type": "graylog",
+    "url": "http://localhost:9000",
+    "token": "my-graylog-token"
+  },
+  "params": [
+    {
+      "id": "from",
+      "type": "datetime",
+      "name": "Start Time"
+    },
+    {
+      "id": "to",
+      "type": "datetime",
+      "name": "End Time"
+    }
+  ],
+  "fields": [
+    "timestamp",
+    "user",
+    "msg"
+  ],
+  "query": "action:tunnel-stats",
+  "time_range": {
+    "from": "${from}",
+    "to": "${to}"
+  }
+}
+```
+
+---
+
+## Report Definition Example
 
 ```json
 {
@@ -140,88 +236,211 @@ Quokka Reports supports various data provider types:
   "name": "My Report",
   "description": "A detailed report",
   "category": "Sales",
-  "tags": ["monthly", "sales"],
-  "datasets": [
-    { "id": "my_dataset" }
+  "tags": [
+    "monthly",
+    "sales"
   ],
-  "template": "report.html"
+  "datasets": [
+    {
+      "id": "my_dataset"
+    }
+  ],
+  "template": "report.html",
+  "active": true
 }
 ```
 
-## 🔒 Authentication
+---
 
-Quokka Reports uses SHA256 hashing for password storage. To create a new user:
+# 🛠 User Management
 
-1. Generate a SHA256 hash of your password:
+Quokka Reports includes an interactive administration utility:
+
 ```bash
-python3 -c "import hashlib; print(hashlib.sha256('your_password'.encode()).hexdigest())"
+python management.py
 ```
 
-2. Add the user to `users.json` with the hashed password
+The management console provides:
 
-## 📊 Report Generation
+* Interactive menu system
+* List all users
+* Display detailed user information
+* Create new users
+* Update existing users
+* Change passwords
+* Activate or deactivate users
+* Delete users
+* Save changes automatically to `users.json`
 
-Reports can be generated in three formats:
+Additional features include:
 
-1. **HTML** - Interactive web-based reports (default)
-2. **PDF** - Static documents for printing/sharing
-3. **Excel** - Multi-sheet spreadsheets for data analysis
+* Email validation
+* Username uniqueness verification
+* Password confirmation
+* Automatic timestamp management
+* Persistent storage
 
-## 🔌 Extending Data Providers
+For backward compatibility, both the legacy `isactive` field and the current `active` field are supported.
 
-Add support for new data sources by creating a new file in `data_providers/`:
+Supported values are:
+
+* `true` / `false`
+* `1` / `0`
+
+New users are always created using the `active` field.
+
+---
+
+# 🔒 Authentication
+
+Quokka Reports stores passwords using **SHA256 hashing**.
+
+A user can be:
+
+| Status   | Description                                 |
+| -------- | ------------------------------------------- |
+| Active   | Can authenticate and access the application |
+| Inactive | Login is denied                             |
+
+---
+
+# 📊 Output Formats
+
+Reports can be generated in three formats.
+
+| Format | Description                               |
+| ------ | ----------------------------------------- |
+| HTML   | Interactive web reports                   |
+| PDF    | Printable and shareable documents         |
+| Excel  | Multi-sheet workbook for further analysis |
+
+---
+
+# 🔌 Creating a Custom Data Provider
+
+Adding support for a new data source is straightforward.
+
+Create a new Python module inside:
+
+```text
+data_providers/
+```
+
+Implement the following function:
 
 ```python
 def fetch_data(dataset_config):
     """
-    Your data provider implementation.
-    
     Args:
-        dataset_config: Full dataset configuration dictionary
-    
+        dataset_config: dataset configuration dictionary
+
     Returns:
-        Dictionary with 'columns' and 'rows' keys
+        {
+            "columns": [...],
+            "rows": [...]
+        }
     """
-    # Your data fetching logic here
+
     return {
-        'columns': ['col1', 'col2'],
-        'rows': [['value1', 'value2']]
+        "columns": ["column1", "column2"],
+        "rows": [
+            ["value1", "value2"]
+        ]
     }
 ```
 
-Then reference the provider type in your dataset configuration.
+Then reference the provider name inside the dataset configuration:
 
-## 🐛 Troubleshooting
+```json
+{
+  "database": {
+    "type": "my_provider"
+  }
+}
+```
 
-**Common Issues:**
-
-1. **PDF generation fails**: Ensure Chromium/Chrome is installed and Playwright dependencies are set up
-   ```bash
-   playwright install chromium
-   ```
-
-2. **Database connection errors**: Verify your database credentials and network access
-
-3. **Template rendering issues**: Ensure all dataset IDs in the report match available datasets
-
-## 📄 License
-
-This project is licensed under the AGPL v3 License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📬 Contact
-
-Project Link: [https://github.com/andreachecchi/quokka-reports](https://github.com/andreachecchi/quokka-reports)
+Quokka Reports will automatically load the corresponding module.
 
 ---
 
-*Made with ❤️ by the Quokka Team*
+# 🐛 Troubleshooting
+
+## PDF generation fails
+
+Install the required Playwright browser:
+
+```bash
+playwright install chromium
+```
+
+---
+
+## Database connection errors
+
+Verify:
+
+* Database credentials
+* Network connectivity
+* Firewall rules
+* Provider configuration
+
+---
+
+## Template rendering issues
+
+Ensure that:
+
+* every dataset referenced by a report exists;
+* dataset IDs match those declared in `report.json`;
+* report templates are located inside the correct report directory.
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+
+```bash
+git checkout -b feature/my-feature
+```
+
+3. Commit your changes.
+
+```bash
+git commit -m "Add my feature"
+```
+
+4. Push your branch.
+
+```bash
+git push origin feature/my-feature
+```
+
+5. Open a Pull Request.
+
+---
+
+# 📄 License
+
+This project is licensed under the **AGPL v3 License**.
+
+See the `LICENSE` file for additional details.
+
+---
+
+# 📬 Contact
+
+GitHub Repository:
+
+https://github.com/andreachecchi/quokka-reports
+
+---
+
+<div align="center">
+
+Made with ❤️ by the Quokka Team
+
+</div>
