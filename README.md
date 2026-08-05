@@ -14,22 +14,24 @@ Quokka Reports is an open-source reporting platform that transforms SQL queries 
 
 ## 📑 Table of Contents
 
-- Why Quokka
-- Features
-- Architecture
-- Quick Start
-- Project Structure
-- Configuration
-- User Management
-- Authentication
-- Output Formats
-- Extending Quokka
-- Troubleshooting
-- Roadmap
-- Contributing
-- Acknowledgements
-- Professional Support
-- License
+## 📑 Table of Contents
+
+- [Why Quokka](#-why-quokka)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Configuration](#-configuration)
+- [User Management](#-user-management)
+- [Authentication](#-authentication)
+- [Output Formats](#-output-formats)
+- [Extending Quokka](#-extending-quokka)
+- [Troubleshooting](#-troubleshooting)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [Acknowledgements](#-acknowledgements)
+- [Professional Support](#-professional-support)
+- [License](#-license)
 
 ---
 
@@ -230,6 +232,8 @@ Special thanks to **Qubit Futura Srl**, whose work in enterprise networking, cyb
 ---
 
 ## 🏢 Professional Support
+
+![Logo](qubit-futura-logo.png)
 
 Need help deploying Quokka Reports in production?
 
