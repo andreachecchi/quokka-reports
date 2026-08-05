@@ -234,7 +234,7 @@ Special thanks to **Qubit Futura Srl**, whose work in enterprise networking, cyb
 ## 🏢 Professional Support
 
 <p align="center">
-  <img src="qubit-futura-logo.jpg" alt="Qubit Futura Srl" width="150">
+  <img src="qubit-futura-logo.jpg" alt="Qubit Futura Srl" width="300">
 </p>
 
 Need help deploying Quokka Reports in production?
