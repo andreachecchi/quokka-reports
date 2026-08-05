@@ -12,6 +12,8 @@ Quokka Reports is an open-source reporting platform that transforms SQL queries 
 
 ---
 
+[English](README.md) | [Italiano](README_ITA.md)
+
 ## 📑 Table of Contents
 
 - [Why Quokka](#-why-quokka)
