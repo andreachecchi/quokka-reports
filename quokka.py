@@ -388,4 +388,12 @@ async def generate_excel(report_id: str, html_path: str, params: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("webserve:app", host="0.0.0.0", port=SERVER_PORT, reload=True)
+    from config import SERVER_HOST, SERVER_RELOAD, SERVER_WORKERS
+    
+    uvicorn.run(
+        "quokka:app",
+        host=SERVER_HOST,
+        port=SERVER_PORT,
+        reload=SERVER_RELOAD,
+        workers=SERVER_WORKERS
+    )

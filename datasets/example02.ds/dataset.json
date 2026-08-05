@@ -1,0 +1,23 @@
+{
+  "id": "example_dataset_02",
+  "name": "Example Dataset 02",
+  "description": "Graylog data example",
+  "database": {
+    "type": "graylog",
+    "url": "http://localhost:9000",
+    "token": "my-supersecret-ultralong-graylog-token"
+  },
+  "params": [
+    { "id": "from", "type": "datetime", "name": "Start Time" },
+    { "id": "to", "type": "datetime", "name": "End Time" }
+  ],
+  "fields": [
+    "timestamp", "user", "gl2_remote_ip", "gl2_remote_port",
+    "srcip", "action", "status", "reason", "logdesc", "msg"
+  ],
+  "query": "action:tunnel-stats",
+  "time_range": {
+    "from": "${from}",
+    "to": "${to}"
+  }
+}

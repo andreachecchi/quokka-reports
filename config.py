@@ -17,3 +17,8 @@ DATASETS_DIR = BASE_DIR / "datasets"
 
 # Directory per report generati
 GENERATED_DIR = BASE_DIR / "generated"
+
+# Uvicorn server configuration
+SERVER_HOST = "0.0.0.0"
+SERVER_RELOAD = True
+SERVER_WORKERS = 2

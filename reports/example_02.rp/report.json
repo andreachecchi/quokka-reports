@@ -1,0 +1,12 @@
+{
+  "id": "example_report_02",
+  "name": "Example report 02",
+  "description": "This is the example report number 01 - Graylog data",
+  "category": "Generic",
+  "tags": ["Graylog","test"],
+  "datasets": [
+	  { "id":"example_dataset_02" }
+  ],
+  "template": "report.html",
+  "active": true
+}
