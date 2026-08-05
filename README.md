@@ -396,30 +396,11 @@ Ensure that:
 
 ---
 
-# 🤝 Contributing
+## 🤝 Contributing
 
-Contributions are welcome!
+Feedback, feature requests and pull requests are welcome.
 
-1. Fork the repository.
-2. Create a feature branch.
-
-```bash
-git checkout -b feature/my-feature
-```
-
-3. Commit your changes.
-
-```bash
-git commit -m "Add my feature"
-```
-
-4. Push your branch.
-
-```bash
-git push origin feature/my-feature
-```
-
-5. Open a Pull Request.
+If you'd like to contribute, please open an Issue first so we can discuss the proposed change before implementation.
 
 ---
 
