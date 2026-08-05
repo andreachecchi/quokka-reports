@@ -19,5 +19,7 @@
   "time_range": {
     "from": "${from}",
     "to": "${to}"
-  }
+  },
+  "order_by": "timestamp",
+  "sort": "asc"
 }

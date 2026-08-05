@@ -28,6 +28,10 @@ def fetch_data(dataset_config, dataset_dir):
     from_time = param_values.get('from', time_range.get('from', '2025-01-01T00:00:00.000Z'))
     to_time = param_values.get('to', time_range.get('to', '2027-01-02T00:00:00.000Z'))
     
+    # Get sorting configuration
+    order_by = dataset_config.get('order_by')
+    sort = dataset_config.get('sort', 'asc')
+    
     # Ensure timestamps are in correct format: YYYY-MM-DDTHH:MM:SS.000Z
     def normalize_timestamp(timestamp):
         """Complete timestamp with missing seconds and milliseconds if needed"""
@@ -92,6 +96,19 @@ def fetch_data(dataset_config, dataset_dir):
     # First row is usually headers
     columns = rows[0] if rows else fields
     data_rows = rows[1:] if len(rows) > 1 else []
+    
+    # Apply sorting if configured
+    if order_by and data_rows:
+        try:
+            # Find the index of the column to sort by
+            sort_col_index = columns.index(order_by)
+            
+            # Sort rows based on the specified column
+            reverse = sort.lower() == 'desc'
+            data_rows.sort(key=lambda row: row[sort_col_index] if sort_col_index < len(row) else '', reverse=reverse)
+        except (ValueError, IndexError):
+            # Column not found or other error, skip sorting
+            pass
     
     return {
         'columns': columns,
