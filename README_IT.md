@@ -8,7 +8,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136+-orange.svg)](https://fastapi.tiangolo.com)
 
-Quokka Reports è una piattaforma di reporting open-source che trasforma query SQL e fonti di dati esterni in report HTML, PDF ed Excel elegantemente formattati, grazie a un'architettura modulare basata su dataset, template e provider di dati插件.
+Quokka Reports è una piattaforma di reporting open-source che trasforma query SQL e fonti di dati esterni in report HTML, PDF ed Excel elegantemente formattati, grazie a un'architettura modulare basata su dataset, template e provider di dati pluggabili.
 
 ---
 
@@ -44,7 +44,7 @@ Principi fondamentali:
 - Separare l'acquisizione dei dati dalla presentazione.
 - Promuovere definizioni di dataset riutilizzabili.
 - Progettare report usando HTML e CSS standard.
-- Rendere i provider di dati插件.
+- Rendere i provider di dati pluggabili.
 - Supportare più formati di output.
 
 ---
