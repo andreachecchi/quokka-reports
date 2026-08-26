@@ -377,9 +377,9 @@ body {
     color: #2e7d32;
 }
 
-#export-pdf-btn, #export-excel-btn {
+/*#export-pdf-btn, #export-excel-btn {
     display: inline-block !important;
-}
+}*/
 
 .btn-secondary {
     background-color: #795548;
