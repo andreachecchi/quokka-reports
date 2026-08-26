@@ -29,4 +29,4 @@ MCP_HOST = "0.0.0.0"
 MCP_PORT = 6485
 
 # Authentication token for MCP server (set to None to disable auth)
-MCP_AUTH_TOKEN = "pippo" #None
+MCP_AUTH_TOKEN = "my-bearer-token" #None
