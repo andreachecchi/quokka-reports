@@ -23,6 +23,19 @@ $(document).ready(function() {
     const report = REPORT_DATA || {};
     const datasets = DATASETS_DATA || [];
     
+    // Handle disabled output types (case-insensitive)
+    const disabledOutputTypes = (report.disabled_output_types || []).map(type => type.toLowerCase());
+    
+    if (disabledOutputTypes.includes('html')) {
+        $('#execute-btn').hide();
+    }
+    if (disabledOutputTypes.includes('pdf')) {
+        $('#export-pdf-btn').hide();
+    }
+    if (disabledOutputTypes.includes('excel')) {
+        $('#export-excel-btn').hide();
+    }
+    
     // Show report name
     $('h2').text(report.name || 'Report');
     $('.report-description').html(report.description || '');
