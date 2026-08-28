@@ -36,38 +36,43 @@ def _fetch_data(dataset_config, dataset_dir):
 
 def _render_template(template_content, dataset_results, report_config):
     """Render the HTML template with dataset results."""
-    # This is a simple renderer - could be enhanced with jinja2 or similar
+
     html = template_content
-    # For the sample_v1 report, find the tbody and populate it
+
     for dataset_id, data in dataset_results.items():
+
         print(dataset_id)
+
         tbody_content = ''
+
         for row in data['rows']:
-            tbody_content += '\n          <tr>'
+            tbody_content += '\n          '
+
             for cell in row:
-                tbody_content += f'<td>{cell}</td>'
-            tbody_content += '</tr>'
-        
-        # Replace tbody placeholder with matching dataset_id, or use first tbody if no ID match
+                tbody_content += f'{cell}'
+
+            tbody_content += ''
+
         target_id = f'data-id="{dataset_id}"'
+
         if target_id in html:
-            # Replace tbody with matching dataset_id
             html = re.sub(
-                rf'(\u003ctbody[^>]*{re.escape(target_id)}[^>]*\u003e\s*)(\s*\u003c/tbody\u003e)',
-                f'\\1{tbody_content}\\2',
+                rf'(<tbody[^>]*{re.escape(target_id)}[^>]*>\s*)(\s*</tbody>)',
+                lambda m: m.group(1) + tbody_content + m.group(2),
                 html,
                 count=1
             )
-        elif '\u003ctbody\u003e' in html:
-            # Fallback: replace first tbody without ID match
+
+        elif '<tbody>' in html:
             html = re.sub(
-                r'(\u003ctbody\u003e\s*)(\s*\u003c/tbody\u003e)',
-                f'\\1{tbody_content}\\2',
+                r'(<tbody>\s*)(\s*</tbody>)',
+                lambda m: m.group(1) + tbody_content + m.group(2),
                 html,
                 count=1
             )
-    
+
     return html
+
 def _extract_resources_from_html(html_content, base_path):
     """Extract resource references (css, js, images) from HTML content.
     
