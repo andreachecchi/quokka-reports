@@ -374,60 +374,28 @@ $('#export-pdf-btn').on('click', function() {
         
         // Execute report and export to Excel
         $.ajax({
-            url: `/api/report/${report.id}/execute`,
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ params: params }),
-            success: function(response) {
-                $btn.prop('disabled', false).removeClass('btn-loading');
-                
-                if (response.success) {
-                    $('#report-status').html('<div class="success-message">Report generato con successo!</div>');
-                    
-                    // Hide success message after 3 seconds
-                    setTimeout(function() {
-                        $('#report-status').empty();
-                    }, 3000);
-                    
-                    // Export to Excel
-                    const htmlPath = response.html_path;
-                    const htmlFileName = htmlPath.split('/').pop();
-                    
-                    $.ajax({
-                        url: `/api/report/${report.id}/excel?html_path=${htmlFileName}&params=${encodeURIComponent(JSON.stringify(params))}`,
-                        method: 'GET',
-                            success: function(excelResponse) {
-                                if (excelResponse.success) {
-                                // Download Excel file
-                                const excelPath = excelResponse.excel_path;
-                                const excelName = excelPath.split('/').pop();
-                                window.location.href = `/generated/${excelName}`;
-                            } else {
-                                $btn.prop('disabled', false).removeClass('btn-loading');
-                                $('#report-error').text(excelResponse.detail || 'Errore durante l\'esportazione in Excel').addClass('visible');
-                            }
-                        },
-                            error: function(xhr) {
-                                $btn.prop('disabled', false).removeClass('btn-loading');
-                                let errorMessage = 'Errore durante l\'esportazione in Excel';
-                            if (xhr.responseJSON && xhr.responseJSON.detail) {
-                                errorMessage = xhr.responseJSON.detail;
-                            }
-                            $('#report-error').text(errorMessage).addClass('visible');
-                        }
-                    });
+            url: `/api/report/${report.id}/excel?html_path=${htmlFileName}&params=${encodeURIComponent(JSON.stringify(params))}`,
+            method: 'GET',
+                success: function(excelResponse) {
+                    if (excelResponse.success) {
+                    // Download Excel file
+                    const excelPath = excelResponse.excel_path;
+                    const excelName = excelPath.split('/').pop();
+                    window.location.href = `/generated/${excelName}`;
                 } else {
-                    $('#report-error').text(response.detail || 'Errore durante la generazione del report').addClass('visible');
+                    $btn.prop('disabled', false).removeClass('btn-loading');
+                    $('#report-error').text(excelResponse.detail || 'Errore durante l\'esportazione in Excel').addClass('visible');
                 }
             },
-            error: function(xhr) {
-                let errorMessage = 'Errore durante la generazione del report';
+                error: function(xhr) {
+                    $btn.prop('disabled', false).removeClass('btn-loading');
+                    let errorMessage = 'Errore durante l\'esportazione in Excel';
                 if (xhr.responseJSON && xhr.responseJSON.detail) {
                     errorMessage = xhr.responseJSON.detail;
                 }
                 $('#report-error').text(errorMessage).addClass('visible');
-                $btn.prop('disabled', false).removeClass('btn-loading');
             }
         });
+        $btn.prop('disabled', false).removeClass('btn-loading');
     });
 });

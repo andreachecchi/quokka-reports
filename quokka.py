@@ -363,7 +363,7 @@ async def generate_pdf(report_id: str, html_path: str):
 
 
 @app.get("/api/report/{report_id}/excel")
-async def generate_excel(report_id: str, html_path: str, params: str):
+async def generate_excel(report_id: str, params: str):
     """Generate Excel file from HTML report with multiple sheets (one per dataset)."""
     from engine import generate_excel_report
     from urllib.parse import unquote
