@@ -399,3 +399,4 @@ $('#export-pdf-btn').on('click', function() {
         $btn.prop('disabled', false).removeClass('btn-loading');
     });
 });
+
