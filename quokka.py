@@ -35,6 +35,12 @@ def check_session(request: Request) -> bool:
     return request.cookies.get("authenticated") == "true"
 
 
+def require_auth(request: Request):
+    """Require authentication for an API endpoint. Raises 401 if not authenticated."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+
 def get_app_title() -> str:
     """Get app title from locale files."""
     try:
@@ -296,15 +302,20 @@ async def logout():
 
 
 @app.get("/api/reports")
-async def list_reports():
-    """List all available reports."""
+async def list_reports(request: Request):
+    """List all available reports (requires authentication)."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
     reports = get_reports_list()
     return {"reports": reports}
 
 
 @app.get("/api/report/{report_id}")
-async def get_report_endpoint(report_id: str):
-    """Get report details by ID."""
+async def get_report_endpoint(request: Request, report_id: str):
+    """Get report details by ID (requires authentication)."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
     report = get_report_details(report_id)
     if not report:
         raise HTTPException(status_code=404, detail="Report not found")
@@ -327,8 +338,11 @@ async def get_report_endpoint(report_id: str):
 
 
 @app.post("/api/report/{report_id}/execute")
-async def execute_report(report_id: str, execute_request: ExecuteReportRequest):
-    """Execute a report with given parameters."""
+async def execute_report(request: Request, report_id: str, execute_request: ExecuteReportRequest):
+    """Execute a report with given parameters (requires authentication)."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
     from engine import generate_report
     
     # Convert params to engine format
@@ -348,8 +362,11 @@ async def execute_report(report_id: str, execute_request: ExecuteReportRequest):
 
 
 @app.get("/api/report/{report_id}/pdf")
-async def generate_pdf(report_id: str, html_path: str):
-    """Generate PDF from HTML report."""
+async def generate_pdf(request: Request, report_id: str, html_path: str):
+    """Generate PDF from HTML report (requires authentication)."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
     from pdf import html_to_pdf
     
     # Build full path to the generated HTML file
@@ -363,8 +380,11 @@ async def generate_pdf(report_id: str, html_path: str):
 
 
 @app.get("/api/report/{report_id}/excel")
-async def generate_excel(report_id: str, params: str):
-    """Generate Excel file from HTML report with multiple sheets (one per dataset)."""
+async def generate_excel(request: Request, report_id: str, params: str):
+    """Generate Excel file from HTML report with multiple sheets (one per dataset) (requires authentication)."""
+    if not check_session(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
     from engine import generate_excel_report
     from urllib.parse import unquote
     
