@@ -374,7 +374,7 @@ $('#export-pdf-btn').on('click', function() {
         
         // Execute report and export to Excel
         $.ajax({
-            url: `/api/report/${report.id}/excel?html_path=${htmlFileName}&params=${encodeURIComponent(JSON.stringify(params))}`,
+            url: `/api/report/${report.id}/excel?params=${encodeURIComponent(JSON.stringify(params))}`,
             method: 'GET',
                 success: function(excelResponse) {
                     if (excelResponse.success) {
