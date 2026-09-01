@@ -94,8 +94,8 @@ def schedule_reports():
     # Create zip archive with from_date in filename
     if generated_files:
         # Extract date part from from_date (ISO format: YYYY-MM-DDTHH:MM:SS.000Z)
-        # Convert to YYYY-MM-DD_HH-MM for filename
-        from_date_filename = from_date.replace('T', '_').replace(':', '-').split('.')[0]
+        # Convert to YYYY-MM-DD for filename (date only, no time)
+        from_date_filename = from_date.split('T')[0]
         zip_filename = f"reports_{from_date_filename}.zip"
         
         # Create zip archive
