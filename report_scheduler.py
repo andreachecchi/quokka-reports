@@ -6,6 +6,8 @@
 import datetime
 import json
 import os
+import zipfile
+import shutil
 from engine import generate_excel_report
 
 
@@ -34,6 +36,9 @@ def schedule_reports():
     reports_to_run = ['sample_v1', 'sample_v2']
     
     print(f"Running scheduled reports with date range: {from_date} to {to_date}")
+    
+    # List to store generated file paths
+    generated_files = []
     
     for report_id in reports_to_run:
         try:
@@ -78,10 +83,41 @@ def schedule_reports():
             output_path = generate_excel_report(report_id, params)
             print(f"\n✓ Excel report generated successfully: {output_path}")
             
+            # Track generated file
+            generated_files.append(output_path)
+            
         except FileNotFoundError as e:
             print(f"\n✗ Error: Report or dataset not found for {report_id}: {e}")
         except Exception as e:
             print(f"\n✗ Error generating report {report_id}: {e}")
+    
+    # Create zip archive with from_date in filename
+    if generated_files:
+        # Extract date part from from_date (ISO format: YYYY-MM-DDTHH:MM:SS.000Z)
+        # Convert to YYYY-MM-DD_HH-MM for filename
+        from_date_filename = from_date.replace('T', '_').replace(':', '-').split('.')[0]
+        zip_filename = f"reports_{from_date_filename}.zip"
+        
+        # Create zip archive
+        zip_path = os.path.join('generated', zip_filename)
+        print(f"\n" + "="*60)
+        print(f"Creating zip archive: {zip_path}")
+        
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for file_path in generated_files:
+                if os.path.exists(file_path):
+                    arcname = os.path.basename(file_path)
+                    zipf.write(file_path, arcname)
+                    print(f"  Added: {arcname}")
+        
+        print(f"✓ Zip archive created successfully: {zip_path}")
+        
+        # Delete original files after adding to zip
+        print("\nDeleting original files...")
+        for file_path in generated_files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                print(f"  Deleted: {os.path.basename(file_path)}")
 
 
 if __name__ == '__main__':
