@@ -13,13 +13,14 @@ def get_previous_day_date_range():
     """Get the date range for the previous day.
     
     Returns:
-        tuple: (from_date, to_date) as strings in format "YYYY-MM-DD HH:MM"
+        tuple: (from_date, to_date) as strings in ISO format "YYYY-MM-DDTHH:MM:SS.000Z"
     """
     today = datetime.datetime.now()
     yesterday = today - datetime.timedelta(days=1)
     
-    from_date = yesterday.strftime('%Y-%m-%d 00:00')
-    to_date = today.strftime('%Y-%m-%d 00:00')
+    # Format for Graylog: ISO 8601 with milliseconds
+    from_date = yesterday.strftime('%Y-%m-%dT%H:%M:00.000Z')
+    to_date = today.strftime('%Y-%m-%dT%H:%M:00.000Z')
     
     return from_date, to_date
 
