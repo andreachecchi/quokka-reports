@@ -58,16 +58,16 @@ def schedule_reports():
             # Build params with all datasets from the report
             params = {
                 report_id: {
-                    'from_date': from_date,
-                    'to_date': to_date
+                    'from': from_date,
+                    'to': to_date
                 }
             }
             
             # Add dataset parameters for each dataset in the report
             for dataset_id in dataset_ids:
                 params[dataset_id] = {
-                    'from_date': from_date,
-                    'to_date': to_date
+                    'from': from_date,
+                    'to': to_date
                 }
                 print(f"Added dataset parameter: {dataset_id} (from: {from_date}, to: {to_date})")
             
