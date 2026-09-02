@@ -17,39 +17,30 @@ from datetime import datetime
 from functools import wraps
 
 def require_auth(func):
-    """Decorator to require authentication via MCP_AUTH_TOKEN."""
+    """Decorator to require authentication via MCP_AUTH_TOKEN.
+
+    In FastMCP 3.x la Request HTTP non viene passata alle callable dei tool:
+    va letta dal contextvar di richiesta tramite get_http_headers().
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        # Get the request context from kwargs or environment
-        request = kwargs.get('request')
-        
-        # Try to get auth token from request context if available
-        auth_header = None
-        if request and hasattr(request, 'headers'):
-            auth_header = request.headers.get('Authorization', '')
-        
-        # Also check if there's a context with headers
-        if not auth_header:
-            from contextvars import ContextVar
-            try:
-                import inspect
-                frame = inspect.currentframe()
-                while frame:
-                    if 'request' in frame.f_locals:
-                        req = frame.f_locals['request']
-                        if hasattr(req, 'headers'):
-                            auth_header = req.headers.get('Authorization', '')
-                            break
-                    frame = frame.f_back
-            except:
-                pass
-        
+        from fastmcp.server.dependencies import get_http_headers
+
+        # get_http_headers non solleva mai eccezioni: dict vuoto se non c'e'
+        # una richiesta HTTP attiva (es. trasporto stdio).
+        try:
+            headers = get_http_headers(include={"authorization"})
+        except Exception:
+            headers = {}
+
+        auth_header = headers.get("authorization", "")
+
         # Check if token is valid
         if not auth_header or not auth_header.startswith('Bearer '):
             return json.dumps({"error": "Authentication required. Please provide a valid Bearer token."})
-        
+
         token = auth_header[7:]  # Remove 'Bearer ' prefix
-        
+
         # Load config and verify token
         try:
             from config import MCP_AUTH_TOKEN
@@ -57,7 +48,7 @@ def require_auth(func):
                 return json.dumps({"error": "Invalid authentication token."})
         except ImportError:
             return json.dumps({"error": "Authentication server configuration not found."})
-        
+
         # Call the original function
         return func(*args, **kwargs)
     return wrapper
